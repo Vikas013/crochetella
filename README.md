@@ -31,7 +31,7 @@ The app is served at <http://localhost:3000>. The Docker image builds the Next.j
 To wire the database side, provide these values from your Supabase project:
 
 1. `NEXT_PUBLIC_SUPABASE_URL` — Project URL from Supabase project settings.
-2. `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Public anon key for browser-safe reads and authenticated customer requests.
+2. `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — Public publishable key for browser-safe reads and authenticated customer requests.
 3. `SUPABASE_SERVICE_ROLE_KEY` — Server-only service role key for migrations/admin-only scripts. Do not paste this into client code or commit it.
 4. Supabase project ref and database password if you want CLI-driven migrations against the remote project.
 5. Storage bucket name preference for product images, or confirm `product-images` is acceptable.
@@ -47,7 +47,7 @@ npm run build
 
 ## Buyer authentication
 
-Buyer sign-in and sign-up pages are available at `/auth/sign-in` and `/auth/sign-up`. They use Supabase Auth with the browser anon key from `.env.local`. When Supabase email confirmation is enabled, new buyers will need to confirm their email before signing in.
+Buyer sign-in and sign-up pages are available at `/auth/sign-in` and `/auth/sign-up`. They use Supabase Auth with the browser publishable key from `.env.local`. When Supabase email confirmation is enabled, new buyers will need to confirm their email before signing in.
 
 ## Creating database tables and seeding an admin
 
@@ -61,3 +61,8 @@ To seed an admin:
 4. Run the seed SQL with a privileged database connection.
 
 The admin user is intentionally seeded from an existing Supabase Auth user so passwords and MFA remain managed by Supabase Auth rather than by application SQL.
+
+
+## Supabase SSR session handling
+
+Supabase browser, server, and middleware helpers live in `src/utils/supabase`. Middleware calls `supabase.auth.getUser()` on matched requests so auth cookies stay refreshed for buyer sessions.

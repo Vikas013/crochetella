@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
+import { createClient } from "@/utils/supabase/client";
 
 type AuthMode = "sign-in" | "sign-up";
 
@@ -22,7 +22,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     const email = String(formData.get("email") ?? "");
     const password = String(formData.get("password") ?? "");
     const fullName = String(formData.get("fullName") ?? "");
-    const supabase = createBrowserSupabaseClient();
+    const supabase = createClient();
 
     const result = isSignUp
       ? await supabase.auth.signUp({
